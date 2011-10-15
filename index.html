@@ -5,6 +5,7 @@
 </head>
 <body>
   <h1>Hello Memory World 2</h1>
+  <button onclick="FB.login(function(r){alert(r.status);console.log(r);});">Facebook Connect</button>
   <div id="fb-root"></div>
   <script>
     window.fbAsyncInit = function() {
