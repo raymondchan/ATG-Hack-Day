@@ -5,12 +5,13 @@
 </head>
 <body>
   <h1>Hello Memory World 2</h1>
-  <button onclick="FB.login(function(r){alert(r.status);console.log(r);});">Facebook Connect</button>
+  <div>Load this from <b><a href="http://localhost/memoryworld2/">http://localhost/memoryworld2/</a></b> or <b><a href="http://captcha-racer.com/memoryworld2/">http://captcha-racer.com/memoryworld2/</a></b></div>
+  <button onclick="FB.login(function(r){alert(r.status);console.log(r);});">Connect with Facebook and Start Game</button>
   <div id="fb-root"></div>
   <script>
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : '241051845944072', // App ID
+        appId      : (window.location.host=='localhost'?'263580510343671':'241051845944072'), // App ID
         channelURL : '//'+window.location.host+(window.location.port?':'+window.location.port:'')+'/channel.html', // Channel File
         status     : true, // check login status
         cookie     : true, // enable cookies to allow the server to access the session
