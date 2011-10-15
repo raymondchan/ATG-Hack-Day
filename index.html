@@ -2,11 +2,23 @@
 <head>
   <title>Memory World 2</title>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script src="GameDataProvider.js"></script>
+  <script src="GameController.js"></script>
+  <style>
+    .hidden {display:none}
+  </style>
 </head>
 <body>
   <h1>Hello Memory World 2</h1>
-  <div>Load this from <b><a href="http://localhost/memoryworld2/">http://localhost/memoryworld2/</a></b> or <b><a href="http://captcha-racer.com/memoryworld2/">http://captcha-racer.com/memoryworld2/</a></b></div>
-  <button onclick="FB.login(function(r){alert(r.status);console.log(r);});">Connect with Facebook and Start Game</button>
+  <div>HEADER: Load this from <b><a href="http://localhost/memoryworld2/">http://localhost/memoryworld2/</a></b> or <b><a href="http://captcha-racer.com/memoryworld2/">http://captcha-racer.com/memoryworld2/</a></b></div>
+  <hr noshade size="1" />
+
+  <div class="gamestates welcome hidden"></div>
+  <div class="gamestates interstitial hidden">I am loading next level now</div>
+  <div class="gamestates canvas hidden">Game Canvas</div>
+  
+  <hr noshade size="1" />
+  <div>Footer</div>
   <div id="fb-root"></div>
   <script>
     window.fbAsyncInit = function() {
@@ -19,7 +31,7 @@
         xfbml      : true  // parse XFBML
       });
 
-      // Additional initialization code here
+      MemoryWall.gameController.init();
     };
 
     // Load the SDK Asynchronously
