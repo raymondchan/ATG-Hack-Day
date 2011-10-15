@@ -40,10 +40,10 @@ MemoryWall.GameDataProvider = function(){
 			{"url":"http://graph.facebook.com/224713/picture","matchData":"200024"}
 			]
 		};
-	}
+	};
 	
 	return Me;
-}
+};
 
 //call functions
 var gdp = MemoryWall.GameDataProvider(); 
