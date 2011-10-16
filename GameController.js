@@ -104,6 +104,10 @@ var MemoryWall = MemoryWall || {};
     if (!this._categories) {
       this._categories = this.gameDataProvider.getCategories();
     }
+    
+ // this.gameDataProvider.getGameData({"category":this._categories[0].name, "size":16, "callback": function(d) {console.log(d);}});
+  
+
     return this._categories;
   };
   
