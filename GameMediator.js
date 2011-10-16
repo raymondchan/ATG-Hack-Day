@@ -17,8 +17,7 @@ CLASS_Mediator.prototype.getData = function(category,size,callback)
 	this._provider.getGameData({"category":category,
 	                       "size":size,
 						   "callback": function (d) {
-						     console.log(d);
-					self._fullData=d;
+					       self._fullData=d;
 	                self._gameData=self._fullData.data;
 	                self._addIDs();
 	                callback();
@@ -46,6 +45,7 @@ CLASS_Mediator.prototype.renderView = function()
 //shuffles the order of the game Data
 CLASS_Mediator.prototype.shuffle = function()
 {
+  console.log(this);
 	var len=this._gameData.length;
 	var unSortedData=new Array();
 	for (var i=0; i<len; i++)
@@ -57,6 +57,7 @@ CLASS_Mediator.prototype.shuffle = function()
 		this._gameData.splice(rand,1);
 	}
 	this._gameData=unSortedData;
+	console.log(unSortedData);
 }
 
 

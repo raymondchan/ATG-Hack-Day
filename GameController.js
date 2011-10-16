@@ -50,13 +50,13 @@ var MemoryWall = MemoryWall || {};
   GameController.prototype.startGame = function(category){
     var self = this;
     $('.gamestates').hide();
-    console.log(category);
     var mediator = new CLASS_Mediator(this.gameDataProvider, this.gameView);
     mediator.getData(category.name, 16, function(){
       mediator.initView(category.name);
       mediator.shuffle();
       mediator.renderView();      
     });
+    $('.gamestates.canvas').fadeIn();
 console.log("i should be running");
 /*
     // TODO: instantiate game object
