@@ -36,6 +36,7 @@ function MemoryGameView()
 
 MemoryGameView.prototype.initView = function(gameTitle, data, tileFlippedCallback)
 {
+  console.log(gameTitle, data, tileFlippedCallback);
     this._setHeader(gameTitle);
     if (typeof tileFlippedCallback == "function")
 	this._tileFlippedCallback = tileFlippedCallback;
@@ -96,8 +97,8 @@ MemoryGameView.prototype._initHeaderView = function()
 
 MemoryGameView.prototype._handleTileClicked = function(event)
 {
-    if (!this._running) // ignore clicks when game isn't running
-	return;
+    //if (!this._running) // ignore clicks when game isn't running
+	//return;
 
     var clickedDomId = event.target.id;
     var clickedId = clickedDomId.substring(5);

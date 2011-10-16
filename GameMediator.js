@@ -56,6 +56,8 @@ CLASS_Mediator.prototype.shuffle = function()
 		this._gameData.splice(rand,1);
 	}
 	this._gameData=unSortedData;
+  this._addIDs();
+	console.log(this._gameData);
 }
 
 
@@ -76,18 +78,21 @@ CLASS_Mediator.prototype._addIDs = function()
 //flipped callback triggered when a view's tile was flipped
 CLASS_Mediator.prototype._flippedCallback = function(id)
 {
+  var self=this;
 	this.clickAccum.push(id);	
 	if (this.clickAccum.length==this.MAX_CLICK)
 	{
 		var id1=this.clickAccum[0];
 		var id2=this.clickAccum[1];
-		result=_checkIDsCallback(id1,id2);
-		this.clickAccum.length=0; //clear array
+		result=self._checkIDsCallback(id1,id2);
+		self.clickAccum.length=0; //clear array
 		//flip back
 		if (!result) {
-			this._view.flipTile(id1);
-			this._view.flipTile(id2);
-		}
+  		setTimeout(function(){
+  			self._view.flipTile(id1);
+  			self._view.flipTile(id2);
+    	}, 1000);
+  	}
 	}
 	
 }
@@ -97,6 +102,7 @@ CLASS_Mediator.prototype._checkIDsCallback = function(id1,id2)
 {
 	var item1=this._gameData[id1];
 	var item2=this._gameData[id2];
+  console.log(id1,id2,item1, item2);
 	var result=this._fullData.comparator(item1,item2);
 	return result;
 }
