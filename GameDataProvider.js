@@ -44,6 +44,7 @@ MemoryWall.GameDataProvider = function(){
 			}
 			
 			var picked = [];
+			var i = 0;
 			var target = new Array(Me.facebookFriendsData.length);
 			for (i=0;i<target.length;i++) target[i]=i;
 			for(i=0;i<pickSize;i++){
@@ -55,8 +56,8 @@ MemoryWall.GameDataProvider = function(){
 			Me.gameData.data = new Array(picked.length);
 			for(i=0;i<picked.length;i++){
 				friend = Me.facebookFriendsData[picked[i]];
-				Me.gameData.data.push({"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid});
-				Me.gameData.data.push({"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid});
+				Me.gameData.data[i] = {"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid};
+				Me.gameData.data[2*i] = {"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid};
 			}	
 		}
 	}
