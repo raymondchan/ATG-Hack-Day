@@ -52,12 +52,11 @@ var MemoryWall = MemoryWall || {};
     $('.gamestates').hide();
     var mediator = new CLASS_Mediator(this.gameDataProvider, this.gameView);
     mediator.getData(category.name, 16, function(){
-      mediator.initView(category.name);
+      mediator.initView(category.question);
       mediator.shuffle();
       mediator.renderView();      
     });
     $('.gamestates.canvas').fadeIn();
-console.log("i should be running");
 /*
     // TODO: instantiate game object
     this.gameView.initView({"name":"education","question":"Match friends who went to same school"}, [

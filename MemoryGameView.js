@@ -36,7 +36,6 @@ function MemoryGameView()
 
 MemoryGameView.prototype.initView = function(gameTitle, data, tileFlippedCallback)
 {
-  console.log(gameTitle, data, tileFlippedCallback);
     this._setHeader(gameTitle);
     if (typeof tileFlippedCallback == "function")
 	this._tileFlippedCallback = tileFlippedCallback;

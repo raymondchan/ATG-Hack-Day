@@ -57,7 +57,6 @@ CLASS_Mediator.prototype.shuffle = function()
 	}
 	this._gameData=unSortedData;
   this._addIDs();
-	console.log(this._gameData);
 }
 
 
@@ -102,7 +101,6 @@ CLASS_Mediator.prototype._checkIDsCallback = function(id1,id2)
 {
 	var item1=this._gameData[id1];
 	var item2=this._gameData[id2];
-  console.log(id1,id2,item1, item2);
 	var result=this._fullData.comparator(item1,item2);
 	return result;
 }
