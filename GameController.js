@@ -1,22 +1,33 @@
 var MemoryWall = MemoryWall || {};
 (function(){
   var GameController = MemoryWall.GameController = function(){
-    this.gameDataProvider = MemoryWall.GameDataProvider(); 
+    this.gameDataProvider = MemoryWall.GameDataProvider();
   };
 
   GameController.prototype.init = function(){
     var self = this;
     $('.gamestates').hide();
-    $('.gamestates.welcome').html('<button id="initgame">Start Game</button>').show();
+    $('.gamestates.welcome').show();
+    
+    // welcome screen
     $('#initgame').click(function(){
       FB.login(function(r){
         if (r.status == 'connected') {
-          self.nextLevel();
+          FB.api('/me', function(response) {
+            $('#playerName').text(response.name);
+            self.updateScore(0); // update the screen
+            self.nextLevel();
+          });
         } else {
           alert('Please connect with Facebook first');
         }
       });
-    });  
+    });
+    
+    // game finished screen
+    $('#nextLevel').click(function(){
+      self.nextLevel();
+    });
   };
 
   GameController.prototype.nextLevel = function(){
@@ -31,9 +42,21 @@ var MemoryWall = MemoryWall || {};
   };
 
   GameController.prototype.startGame = function(category){
+    var self = this;
     $('.gamestates').hide();
     $('.gamestates.canvas').fadeIn();
     $('.gamestates.canvas').html("Game Starting: " + JSON.stringify(category));
+    // TODO: instantiate game object
+    setTimeout(function(){
+      self.onGameFinished(Math.floor(Math.random() * 50) + 1);
+    }, 3000);
+  };
+  
+  GameController.prototype.onGameFinished = function(score){
+    $('.gamestates').hide();
+    $('.gamestates.finish .message').html('You finished this game with score of ' + score);
+    $('.gamestates.finish').fadeIn();
+    this.updateScore(score);
   };
 
   GameController.prototype.getCategories = function(){
@@ -41,6 +64,12 @@ var MemoryWall = MemoryWall || {};
       this._categories = this.gameDataProvider.getCategories();
     }
     return this._categories;
+  };
+  
+  GameController.prototype.updateScore = function(delta){
+    if (!this.score) this.score = 0;
+    this.score += delta;
+    $('#playerScore').text(this.score);
   };
 
   MemoryWall.gameController = new MemoryWall.GameController();

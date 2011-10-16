@@ -6,19 +6,26 @@
   <script src="GameController.js"></script>
   <style>
     .hidden {display:none}
+    #hdrStats {font-weight:bold;color:#00c}
+    #hdrStats span {color:#c00}
   </style>
 </head>
 <body>
   <h1>Hello Memory World 2</h1>
-  <div>HEADER: Load this from <b><a href="http://localhost/memoryworld2/">http://localhost/memoryworld2/</a></b> or <b><a href="http://captcha-racer.com/memoryworld2/">http://captcha-racer.com/memoryworld2/</a></b></div>
+  <div id="hdrStats">Player: <span id="playerName"></span> Score: <span id="playerScore"></span></div>
   <hr noshade size="1" />
 
-  <div class="gamestates welcome hidden"></div>
+  <div class="gamestates welcome hidden"><button id="initgame">Start Game</button></div>
   <div class="gamestates interstitial hidden">I am loading next level now</div>
   <div class="gamestates canvas hidden">Game Canvas</div>
+  <div class="gamestates finish hidden">
+    <div class="message"></div>
+    <div><button id="nextLevel">Next Level</button></div>
+  </div>
   
   <hr noshade size="1" />
   <div>Footer</div>
+  <div>Load this from <b><a href="http://localhost/memoryworld2/">http://localhost/memoryworld2/</a></b> or <b><a href="http://captcha-racer.com/memoryworld2/">http://captcha-racer.com/memoryworld2/</a></b></div>
   <div id="fb-root"></div>
   <script>
     window.fbAsyncInit = function() {
