@@ -36,7 +36,7 @@ var MemoryWall = MemoryWall || {};
         } else {
           alert('Please connect with Facebook first');
         }
-      });
+      }, {scope: 'friends_education_history,friends_birthday,friends_checkins,friends_hometown,friends_interests,friends_likes,friends_relationships,friends_religion_politics,friends_work_history'});
     });
     
     // game finished screen
