@@ -12,6 +12,29 @@
     border: 1px solid rgb(100, 100, 100);
 }
 
+#header_text {
+    float: left; 
+    width: 84%;
+    min-height: 100px;
+}
+
+#timer {
+    float: left; 
+    width: 14%; 
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(248,80,50,1)), color-stop(50%,rgba(241,111,92,1)), color-stop(51%,rgba(246,41,12,1)), color-stop(71%,rgba(240,47,23,1)), color-stop(100%,rgba(231,56,39,1)));
+    min-height: 100px;
+    margin-top: 4px; 
+    margin-bottom: 4px;
+    border-radius: 4px;
+    text-align: center;
+    font-family: Tahoma, sans-serif;
+    font-size: 60px;
+    color: rgb(255, 255, 255);
+    text-shadow: 0 3px 3px rgb(100, 100, 100);
+    border: 1px solid rgb(100, 100, 100);    
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+
 div.tiles {
     width: 640px; 
     height: 640px;

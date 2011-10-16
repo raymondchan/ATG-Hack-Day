@@ -30,6 +30,8 @@ function MemoryGameView()
 
     this._tileData = {};  // associative array of id => TileData objects
     this._running = false;
+
+    this._initHeaderView();
 }
 
 MemoryGameView.prototype.initView = function(gameTitle, data, tileFlippedCallback)
@@ -82,6 +84,16 @@ MemoryGameView.prototype.flipTile = function(id)
     }
 }
 
+MemoryGameView.prototype.setTimerDisplay = function(msg)
+{
+    $("#timer").html(msg);
+}
+
+MemoryGameView.prototype._initHeaderView = function()
+{
+    $("#header").html('<div id="header_text"></div><div id="timer"></div><div class="spacer"></div>');
+}
+
 MemoryGameView.prototype._handleTileClicked = function(event)
 {
     if (!this._running) // ignore clicks when game isn't running
@@ -117,6 +129,6 @@ MemoryGameView.prototype._addTile = function(tileData)
 
 MemoryGameView.prototype._setHeader = function(msg)
 {
-    $("#header").empty();
-    $("#header").html(msg);
+    $("#header_text").empty();
+    $("#header_text").html(msg);
 }
