@@ -28,6 +28,7 @@ MemoryWall.GameDataProvider = function(){
 		    	  Me.facebookFriendsData.push(t);
 		      }
 		      prepData(params);
+		      console.log(Me.facebookFriendsData);
 		      params.callback(Me.gameData);			  
 		});
 		

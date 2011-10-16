@@ -3,16 +3,7 @@ var MemoryWall = MemoryWall || {};
   var GameController = MemoryWall.GameController = function(){
     var self = this;
     this.gameDataProvider = MemoryWall.GameDataProvider();
-    this.gameView = new MemoryGameView(function(event)
-    {
-    	var clickedId = event;
-    	console.log("flipped tile: " + clickedId);
-
-    	// flip tile back
-    	setTimeout(function() {
-    	    self.gameView.flipTile(clickedId);
-    	}, 1000);
-    });
+    this.gameView = new MemoryGameView();
   };
 
   GameController.prototype.init = function(){
@@ -51,18 +42,23 @@ var MemoryWall = MemoryWall || {};
     $('.gamestates.interstitial').fadeIn();
     setTimeout(function(){
       var categories = self.getCategories();
-      var theCategory = categories[Math.floor(Math.random() * categories.length)];
+      var theCategory = categories[0];
       self.startGame(theCategory);
-    }, 3000);
+    }, 1);
   };
 
   GameController.prototype.startGame = function(category){
     var self = this;
     $('.gamestates').hide();
-
-
-
-
+    console.log(category);
+    var mediator = new CLASS_Mediator(this.gameDataProvider, this.gameView);
+    mediator.getData(category.name, 16, function(){
+      mediator.initView(category.name);
+      mediator.shuffle();
+      mediator.renderView();      
+    });
+console.log("i should be running");
+/*
     // TODO: instantiate game object
     this.gameView.initView({"name":"education","question":"Match friends who went to same school"}, [
   	    {"id":"1","url":"http://graph.facebook.com/200024/picture","matchData":"200024"},
@@ -91,6 +87,7 @@ var MemoryWall = MemoryWall || {};
     setTimeout(function(){
       self.onGameFinished(Math.floor(Math.random() * 50) + 1);
     }, 30000);
+*/    
   };
   
   GameController.prototype.onGameFinished = function(score){
