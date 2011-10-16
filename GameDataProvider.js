@@ -6,12 +6,22 @@
 var MemoryWall = MemoryWall || {};
 MemoryWall.GameDataProvider = function(){
 	var Me = {};//this pointer
-	Me.facebookFriendsData = {};
+	Me.facebookFriendsData = new Array();
 	
 	//query facebook graph for friend data
-	function getFriendData(fql, callback)
+	function getGenericUserData(params, matchcol)
 	{
-		FB.api({method: 'fql.query', query: fql},callback);	
+		fql = 'SELECT uid, name, ' + matchcol + ' FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())';
+		FB.api({ method: 'fql.query', query: fql }, function(result) {
+			Me.facebookFriendsData = new Array();
+		      for (var i=0; i<300; i++) 
+		      {
+		    	  Me.facebookFriendsData.push({"uid":result[i].uid, "name":result[i].name, matchcol:result[i][matchcol]});
+		      }
+		      prepData(params);
+		});
+		
+		params.callback(Me.gameData);
 	}
 	
 	function prepData(category)
@@ -28,38 +38,9 @@ MemoryWall.GameDataProvider = function(){
 	};
 	
 	Me.getGameData = function(params) {
-		if (params.category != "picture") return;
 		if (params.category == "picture") {
-			fql = 'SELECT uid, name,pic_square FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())';
-		}else if (params.category == "friends"){
-			fql = 'SELECT uid, name,pic_square FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())';
-		}else if (params.category == "education") {
-			fql = 'SELECT uid, name,pic_square FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())';		
+			getGenericUserData(params, 'pic_square');
 		}
-		this.getFriendData(fql, function(){this.prepData(params.category)});
-		return {
-			"version":"1.0",
-			"comparator":function(o1,o2){ return (o1.matchData==o2.matchData) },
-			"data":[
-			{"url":"http://graph.facebook.com/200024/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/200253/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/204996/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/205205/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/205772/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/206517/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/208305/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/224713/picture","matchData":"200024"},
-			
-			{"url":"http://graph.facebook.com/200024/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/200253/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/204996/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/205205/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/205772/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/206517/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/208305/picture","matchData":"200024"},
-			{"url":"http://graph.facebook.com/224713/picture","matchData":"200024"}
-			]
-		};
 	};
 	
 	return Me;
