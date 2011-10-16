@@ -28,9 +28,7 @@ MemoryWall.GameDataProvider = function(){
 		    	  t[matchcol] = result[i][matchcol];
 		    	  Me.facebookFriendsData.push(t);
 		      }
-		      console.log(Me.facebookFriendsData);
 		      prepData(params);
-		      console.log(JSON.stringify(Me.gameData));
 		      params.callback(Me.gameData);			  
 		});
 		
@@ -39,7 +37,6 @@ MemoryWall.GameDataProvider = function(){
 	//assumes FB friend raw data is ready in Me.facebookFriendsData, goes through raw data and selects size elements based on category
 	function prepData(params)
 	{
-	  console.log("called prepData");
 		Me.gameData = {"version":"1.0"};
 
 		if (params.category == Me.CONSTANT.CATEGORY_PICTURE) {

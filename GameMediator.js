@@ -45,7 +45,6 @@ CLASS_Mediator.prototype.renderView = function()
 //shuffles the order of the game Data
 CLASS_Mediator.prototype.shuffle = function()
 {
-  console.log(this);
 	var len=this._gameData.length;
 	var unSortedData=new Array();
 	for (var i=0; i<len; i++)
@@ -57,7 +56,6 @@ CLASS_Mediator.prototype.shuffle = function()
 		this._gameData.splice(rand,1);
 	}
 	this._gameData=unSortedData;
-	console.log(unSortedData);
 }
 
 
