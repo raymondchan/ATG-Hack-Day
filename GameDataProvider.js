@@ -28,6 +28,7 @@ MemoryWall.GameDataProvider = function(){
 		    	  t[matchcol] = result[i][matchcol];
 		    	  Me.facebookFriendsData.push(t);
 		      }
+		      console.log(Me.facebookFriendsData);
 		      prepData(params);
 		      params.callback(Me.gameData);			  
 		});
@@ -100,8 +101,11 @@ MemoryWall.GameDataProvider = function(){
 	};
 	
 	Me.getGameData = function(params) {
-		if (params.category == "picture") {
+		if (params.category == Me.CONSTANT.CATEGORY_PICTURE) {
 			getGenericUserData(params, 'pic_square');
+		}
+		if (params.category == Me.CONSTANT.CATEGORY_EDUCATION) {
+			getGenericUserData(params, 'education');
 		}
 	};
 	
