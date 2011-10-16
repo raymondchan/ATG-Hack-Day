@@ -57,7 +57,7 @@ MemoryWall.GameDataProvider = function(){
 			for(i=0;i<picked.length;i++){
 				friend = Me.facebookFriendsData[picked[i]];
 				Me.gameData.data[i] = {"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid};
-				Me.gameData.data[2*i] = {"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid};
+				Me.gameData.data[i+pickSize] = {"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid};
 			}	
 		}
 	}
