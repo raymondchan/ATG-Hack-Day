@@ -1,0 +1,44 @@
+#header {
+    margin: 5px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    font-family: Tahoma, sans-serif;
+    font-size: 36px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c9de96), color-stop(44%,#8ab66b), color-stop(100%,#398235)); /* Chrome,Safari4+ */
+    color: rgb(255, 255, 255);
+    text-shadow: 0 3px 3px rgb(100, 100, 100);
+    border: 1px solid rgb(100, 100, 100);
+}
+
+div.tiles {
+    width: 640px; 
+    height: 640px;
+}
+
+.tile {
+    float: left;
+    width: 150px;
+    height: 150px;
+    margin: 3px;
+    border-radius: 10px;
+    background-size: 100%;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0);
+    font-family: Tahoma, sans-serif;
+    font-size: 120px;
+    border: 1px solid rgb(100, 100, 100);
+    text-align: center;
+}
+
+.hidden {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(122,188,255,1)), color-stop(44%,rgba(96,171,248,1)), color-stop(100%,rgba(64,150,238,1))); /* Chrome,Safari4+ */
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    color: rgb(255, 255, 255);
+    text-shadow: 0 3px 3px rgb(100, 100, 100);
+}
+
+#tiles_spacer {
+    clear: both;
+}
