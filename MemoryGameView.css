@@ -36,14 +36,15 @@
 }
 
 div.tiles {
-    width: 640px; 
-    height: 640px;
+    width: 100%; 
 }
 
 .tile {
     float: left;
+    /*
     width: 150px;
     height: 150px;
+    */
     margin: 3px;
     border-radius: 10px;
     background-size: 100%;

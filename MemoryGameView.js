@@ -118,7 +118,8 @@ MemoryGameView.prototype._addTile = function(tileData)
 {
     // NOTE: all tiles start off in "hidden" state
     var tileDomId = "tile_" + tileData.id;
-    $("#tiles").append("<div id='"+tileDomId+"' class='tile hidden'>?</div>");
+    var w = Math.floor($(window).width() / 4)-8;
+    $("#tiles").append("<div id='"+tileDomId+"' class='tile hidden' style='width:"+w+"px;height:"+w+"px'>?</div>");
     $("#" + tileDomId).click($.proxy(this._handleTileClicked, this));
 
     var preloadImg = new Image();
