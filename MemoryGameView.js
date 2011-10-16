@@ -120,7 +120,7 @@ MemoryGameView.prototype._addTile = function(tileData)
     var tileDomId = "tile_" + tileData.id;
     var w = Math.floor($(window).width() / 4)-8;
     $("#tiles").append("<div id='"+tileDomId+"' class='tile hidden' style='width:"+w+"px;height:"+w+"px'>?</div>");
-    $("#" + tileDomId).click($.proxy(this._handleTileClicked, this));
+    $("#" + tileDomId).bind('touchstart', $.proxy(this._handleTileClicked, this));
 
     var preloadImg = new Image();
     preloadImg.src = tileData.url;

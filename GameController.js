@@ -5,6 +5,46 @@ var MemoryWall = MemoryWall || {};
     this.gameDataProvider = MemoryWall.GameDataProvider();
     this.gameView = new MemoryGameView();
   };
+  
+  GameController.prototype.fbLogin = function(callback){
+		if (localStorage && localStorage.getItem('FB_SESSION')){
+			this.FB_SESSION = JSON.parse(localStorage.getItem('FB_SESSION'));
+			if (callback) {
+				callback();
+			}	
+			return;
+		}	
+		var self = this;
+		FB.getLoginStatus(function(response) {
+			if (response.status == "connected") {			
+				// logged in and connected user, someone you know				
+				self.FB_SESSION = response.authResponse;
+				if (localStorage){
+					localStorage.setItem('FB_SESSION', JSON.stringify(response.authResponse));
+				}
+				if (callback) {
+					callback();
+				}	
+			}
+			else{
+				// no user session available, someone you dont know			
+				FB.login(function(response) {
+				   if (response.status == "connected") {
+				   		self.FB_SESSION = response.authResponse;
+  						if (localStorage){
+  							localStorage.setItem('FB_SESSION', JSON.stringify(response.authResponse));
+  						}				   	 
+					     if (callback) {
+					     	callback();
+					     }	
+				   } else {
+					     //console.log('User cancelled login or did not fully authorize.');
+               alert('Please connect with Facebook first');
+				   }
+				 }, {scope: 'friends_education_history,friends_birthday,friends_checkins,friends_hometown,friends_interests,friends_likes,friends_relationships,friends_religion_politics,friends_work_history'});			
+			}//else
+		});	
+  };
 
   GameController.prototype.init = function(){
     var self = this;
@@ -13,21 +53,17 @@ var MemoryWall = MemoryWall || {};
     
     // welcome screen
     $('#initgame').click(function(){
-      FB.login(function(r){
-        if (r.status == 'connected') {
-          FB.api('/me', function(response) {
-            self.userData = {
-              name: response.name,
-              id: response.id
-            };
-            $('.playerName').text(response.name);
-            self.updateScore(0); // update the screen
-            self.nextLevel();
-          });
-        } else {
-          alert('Please connect with Facebook first');
-        }
-      }, {scope: 'friends_education_history,friends_birthday,friends_checkins,friends_hometown,friends_interests,friends_likes,friends_relationships,friends_religion_politics,friends_work_history'});
+      self.fbLogin(function(){
+        FB.api('/me', function(response) {
+          self.userData = {
+            name: response.name,
+            id: response.id
+          };
+          $('.playerName').text(response.name);
+          self.updateScore(0); // update the screen
+          self.nextLevel();
+        });        
+      });
     });
     
     // game finished screen

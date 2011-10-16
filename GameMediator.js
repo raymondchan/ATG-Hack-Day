@@ -8,6 +8,7 @@ function CLASS_Mediator(provider,view) {
 	this._title="";
 	this.clickAccum=new Array();
 	this.MAX_CLICK=2;
+	this.CLICK_WAIT_TIME=3000;
 }
 
 //fetches game data from the backend
@@ -56,7 +57,8 @@ CLASS_Mediator.prototype.shuffle = function()
 		this._gameData.splice(rand,1);
 	}
 	this._gameData=unSortedData;
-  this._addIDs();
+    this._addIDs();
+	console.log(this._gameData);
 }
 
 
@@ -72,6 +74,29 @@ CLASS_Mediator.prototype._addIDs = function()
 	}
 }
 
+//returns all tiles if wait-period is reached
+CLASS_Mediator.prototype.resetClicker = function(waitTime) {	
+	var wait=this.CLICK_WAIT_TIME;
+	if (waitTime)
+	{ wait=waitTime;}
+	if (this.clickTimer) { this.clickTimer.clear();}
+	this.clickTimer=new Ticker(wait,1,$.proxy(this.flipAllBack,this),null);	
+	this.clickTimer.start();
+}
+
+//starts a game timer
+CLASS_Mediator.prototype.setGameTimer = function(timerInfo) {
+	if (timeInfo) {
+	 if (this.timer) { this.timer.clear();}
+	 this.timer=new Ticker(timerInfo.duration,
+	                        timerInfo.interval,
+							timerInfo.completeCallback,
+							timerInfo.tickCallback);
+	 this.timer.start();
+	 //this._view.assignTimer(this.timer);
+	}
+}
+
 //-------------------- HANDLERS ----------------------//
 
 //flipped callback triggered when a view's tile was flipped
@@ -84,16 +109,29 @@ CLASS_Mediator.prototype._flippedCallback = function(id)
 		var id1=this.clickAccum[0];
 		var id2=this.clickAccum[1];
 		result=self._checkIDsCallback(id1,id2);
-		self.clickAccum.length=0; //clear array
+		self.clickAccum.length=0; //clear array		
+		self.resetClicker();
 		//flip back
 		if (!result) {
-  		setTimeout(function(){
-  			self._view.flipTile(id1);
-  			self._view.flipTile(id2);
-    	}, 1000);
-  	}
+			setTimeout(function(){
+				self._view.flipTile(id1);
+				self._view.flipTile(id2);
+			}, 1000);
+  	    }
+	} else {
+	self.resetClicker();	
 	}
-	
+}
+
+//flip all clicked items back
+CLASS_Mediator.prototype.flipAllBack = function()
+{
+	for (var i=0; i<this.clickAccum.length;i++)
+	{
+		var id=this.clickAccum[i];
+		this._view.flipTile(id);
+	}
+	this.clickAccum.length=0; //clear array
 }
 
 //checks whether two ids match and returns a boolean
@@ -101,6 +139,7 @@ CLASS_Mediator.prototype._checkIDsCallback = function(id1,id2)
 {
 	var item1=this._gameData[id1];
 	var item2=this._gameData[id2];
+  console.log(id1,id2,item1, item2);
 	var result=this._fullData.comparator(item1,item2);
 	return result;
 }
