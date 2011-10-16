@@ -1,7 +1,18 @@
 var MemoryWall = MemoryWall || {};
 (function(){
   var GameController = MemoryWall.GameController = function(){
+    var self = this;
     this.gameDataProvider = MemoryWall.GameDataProvider();
+    this.gameView = new MemoryGameView(function(event)
+    {
+    	var clickedId = event;
+    	console.log("flipped tile: " + clickedId);
+
+    	// flip tile back
+    	setTimeout(function() {
+    	    self.gameView.flipTile(clickedId);
+    	}, 1000);
+    });
   };
 
   GameController.prototype.init = function(){
@@ -14,7 +25,11 @@ var MemoryWall = MemoryWall || {};
       FB.login(function(r){
         if (r.status == 'connected') {
           FB.api('/me', function(response) {
-            $('#playerName').text(response.name);
+            self.userData = {
+              name: response.name,
+              id: response.id
+            };
+            $('.playerName').text(response.name);
             self.updateScore(0); // update the screen
             self.nextLevel();
           });
@@ -44,12 +59,38 @@ var MemoryWall = MemoryWall || {};
   GameController.prototype.startGame = function(category){
     var self = this;
     $('.gamestates').hide();
-    $('.gamestates.canvas').fadeIn();
-    $('.gamestates.canvas').html("Game Starting: " + JSON.stringify(category));
+
+
+
+
     // TODO: instantiate game object
+    this.gameView.initView({"name":"education","question":"Match friends who went to same school"}, [
+  	    {"id":"1","url":"http://graph.facebook.com/200024/picture","matchData":"200024"},
+  	    {"id":"2","url":"http://graph.facebook.com/200253/picture","matchData":"200024"},
+  	    {"id":"3","url":"http://graph.facebook.com/204996/picture","matchData":"200024"},
+  	    {"id":"4","url":"http://graph.facebook.com/205205/picture","matchData":"200024"},
+  	    {"id":"5","url":"http://graph.facebook.com/205772/picture","matchData":"200024"},
+  	    {"id":"6","url":"http://graph.facebook.com/206517/picture","matchData":"200024"},
+  	    {"id":"7","url":"http://graph.facebook.com/208305/picture","matchData":"200024"},
+  	    {"id":"8","url":"http://graph.facebook.com/224713/picture","matchData":"200024"},
+
+  	    {"id":"9","url":"http://graph.facebook.com/200024/picture","matchData":"200024"},
+  	    {"id":"10","url":"http://graph.facebook.com/200253/picture","matchData":"200024"},
+  	    {"id":"11","url":"http://graph.facebook.com/204996/picture","matchData":"200024"},
+  	    {"id":"12","url":"http://graph.facebook.com/205205/picture","matchData":"200024"},
+  	    {"id":"13","url":"http://graph.facebook.com/205772/picture","matchData":"200024"},
+  	    {"id":"14","url":"http://graph.facebook.com/206517/picture","matchData":"200024"},
+  	    {"id":"15","url":"http://graph.facebook.com/208305/picture","matchData":"200024"},
+  	    {"id":"16","url":"http://graph.facebook.com/224713/picture","matchData":"200024"}
+  	]);
+  	this.gameView.startGame();
+
+
+
+    $('.gamestates.canvas').fadeIn();
     setTimeout(function(){
       self.onGameFinished(Math.floor(Math.random() * 50) + 1);
-    }, 3000);
+    }, 30000);
   };
   
   GameController.prototype.onGameFinished = function(score){
@@ -63,13 +104,20 @@ var MemoryWall = MemoryWall || {};
     if (!this._categories) {
       this._categories = this.gameDataProvider.getCategories();
     }
+    
+ // this.gameDataProvider.getGameData({"category":this._categories[0].name, "size":16, "callback": function(d) {console.log(d);}});
+  
+
     return this._categories;
   };
   
   GameController.prototype.updateScore = function(delta){
-    if (!this.score) this.score = 0;
-    this.score += delta;
-    $('#playerScore').text(this.score);
+    var scores = localStorage.scores || '{}';
+    scores = JSON.parse(scores);
+    if (!scores[this.userData.id]) scores[this.userData.id] = 0;
+    scores[this.userData.id] += delta;
+    localStorage.scores = JSON.stringify(scores);
+    $('.playerScore').text(scores[this.userData.id]);
   };
 
   MemoryWall.gameController = new MemoryWall.GameController();

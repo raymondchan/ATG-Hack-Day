@@ -1,31 +1,39 @@
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name = "viewport" content = "width = 640, initial-scale = 0.5, user-scalable = no">
   <title>Memory World 2</title>
+  <link href='MemoryGameView.css' rel='stylesheet' type='text/css' />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script src="MemoryGameView.js"></script>
   <script src="GameDataProvider.js"></script>
   <script src="GameController.js"></script>
   <style>
-    .hidden {display:none}
     #hdrStats {font-weight:bold;color:#00c}
     #hdrStats span {color:#c00}
+    #mainwrapper {width:640px;height:960px;border:solid 1px black}
   </style>
 </head>
 <body>
-  <h1>Hello Memory World 2</h1>
-  <div id="hdrStats">Player: <span id="playerName"></span> Score: <span id="playerScore"></span></div>
-  <hr noshade size="1" />
-
-  <div class="gamestates welcome hidden"><button id="initgame">Start Game</button></div>
-  <div class="gamestates interstitial hidden">I am loading next level now</div>
-  <div class="gamestates canvas hidden">Game Canvas</div>
-  <div class="gamestates finish hidden">
-    <div class="message"></div>
-    <div><button id="nextLevel">Next Level</button></div>
+  <div id="mainwrapper">
+    <div class="gamestates welcome" style="display:none">Welcome! Click to begin. <button id="initgame">Start Game</button></div>
+    <div class="gamestates interstitial" style="display:none">I am loading next level now</div>
+    <div class="gamestates canvas" style="display:none">
+      <div id="header">
+      </div>
+      <div id="tiles">
+      </div>    
+    </div>
+    <div class="gamestates finish" style="display:none">
+      <div class="message"></div>
+      <div id="hdrStats">Player: <span class="playerName"></span> Score: <span class="playerScore"></span></div>
+      <div><button id="nextLevel">Next Level</button></div>
+    </div>
   </div>
-  
-  <hr noshade size="1" />
+  <!--
   <div>Footer</div>
   <div>Load this from <b><a href="http://localhost/memoryworld2/">http://localhost/memoryworld2/</a></b> or <b><a href="http://captcha-racer.com/memoryworld2/">http://captcha-racer.com/memoryworld2/</a></b></div>
+  -->
   <div id="fb-root"></div>
   <script>
     window.fbAsyncInit = function() {
