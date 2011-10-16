@@ -39,6 +39,6 @@ div.tiles {
     text-shadow: 0 3px 3px rgb(100, 100, 100);
 }
 
-#tiles_spacer {
+div.spacer {
     clear: both;
 }

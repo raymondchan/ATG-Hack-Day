@@ -24,17 +24,19 @@ TileData.prototype.setFlipped = function(newVal)
 }
 
 
-function MemoryGameView(tileFlippedCallback)
+function MemoryGameView()
 {
-    this._tileFlippedCallback = tileFlippedCallback;
+    this._tileFlippedCallback = null;
 
     this._tileData = {};  // associative array of id => TileData objects
     this._running = false;
 }
 
-MemoryGameView.prototype.initView = function(categoryInfo, data)
+MemoryGameView.prototype.initView = function(gameTitle, data, tileFlippedCallback)
 {
-    this._setHeader(categoryInfo.question);
+    this._setHeader(gameTitle);
+    if (typeof tileFlippedCallback == "function")
+	this._tileFlippedCallback = tileFlippedCallback;
 
     // clear out existing tiles and reload
     $("#tiles").empty();
@@ -45,7 +47,7 @@ MemoryGameView.prototype.initView = function(categoryInfo, data)
 	this._addTile(data[i]);
     }
     // add spacer div to ensure proper layout below the grid
-    $("#tiles").append("<div id='tiles_spacer'></div>");
+    $("#tiles").append("<div class='spacer'></div>");
 }
 
 
