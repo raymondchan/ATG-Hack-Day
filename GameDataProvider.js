@@ -20,14 +20,17 @@ MemoryWall.GameDataProvider = function(){
 		fql = 'SELECT uid, name, ' + matchcol + ' FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())';
 		FB.api({ method: 'fql.query', query: fql }, function(result) {
 			Me.facebookFriendsData = new Array();
-		      for (var i=0; i<300; i++) 
+			 var max = Math.min(300, result.length);
+		      for (var i=0; i<max; i++) 
 		      {
-		    	  Me.facebookFriendsData.push({"uid":result[i].uid, "name":result[i].name, matchcol:result[i][matchcol]});
+		    	  var t = {"uid":result[i].uid, "name":result[i].name};
+		    	  t[matchcol] = result[i][matchcol];
+		    	  Me.facebookFriendsData.push(t);
 		      }
 		      prepData(params);
+		      params.callback(Me.gameData);			  
 		});
 		
-		params.callback(Me.gameData);
 	}
 	
 	//assumes FB friend raw data is ready in Me.facebookFriendsData, goes through raw data and selects size elements based on category
@@ -44,6 +47,7 @@ MemoryWall.GameDataProvider = function(){
 			}
 			
 			var picked = [];
+			var i=0;
 			var target = new Array(Me.facebookFriendsData.length);
 			for (i=0;i<target.length;i++) target[i]=i;
 			for(i=0;i<pickSize;i++){
@@ -51,7 +55,7 @@ MemoryWall.GameDataProvider = function(){
 				picked.push(target[j]);
 				target.splice(j,1);
 			}
-			Me.gameData.comparator = function(o1,o2){ return (o1.matchData==o2.matchData) };
+			Me.gameData.comparator = function(o1,o2){ return (o1.matchData==o2.matchData); };
 			Me.gameData.data = new Array(picked.length);
 			for(i=0;i<picked.length;i++){
 				friend = Me.facebookFriendsData[picked[i]];
@@ -79,6 +83,7 @@ MemoryWall.GameDataProvider = function(){
 };
 
 //call functions
-var gdp = MemoryWall.GameDataProvider(); 
-var c = gdp.getCategories();
-var d = gdp.getGameData({"category":c[0].name});
+//var gdp = MemoryWall.GameDataProvider(); 
+//var c = gdp.getCategories();
+//var d = gdp.getGameData({"category":c[0].name});
+//console.log(d);
