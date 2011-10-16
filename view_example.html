@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name = "viewport" content = "width = 640, initial-scale = 0.5, user-scalable = no">
+
+<title>MemoryWorld 2</title>
+
+<script src="https://www.google.com/jsapi"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script src="MemoryGameView.js"></script>
+
+<link href='MemoryGameView.css' rel='stylesheet' type='text/css' />
+
+</head>
+
+<body style="margin: 0px;">
+
+<div id="header">
+</div>
+
+<div id="tiles">
+</div>
+
+<script type="text/javascript">
+
+var gPage = {
+
+    _view : null,
+
+    _handleTileClicked : function(event)
+    {
+	var clickedId = event;
+	console.log("flipped tile: " + clickedId);
+
+	// flip tile back
+	setTimeout(function() {
+	    gPage._view.flipTile(clickedId);
+	}, 1000);
+
+    },
+
+    run : function() {
+
+	var callback = $.proxy(this._handleTileClicked, this);
+
+	this._view = new MemoryGameView(callback);
+	this._view.initView({"name":"education","question":"Match friends who went to same school"}, [
+	    {"id":"1","url":"http://graph.facebook.com/200024/picture","matchData":"200024"},
+	    {"id":"2","url":"http://graph.facebook.com/200253/picture","matchData":"200024"},
+	    {"id":"3","url":"http://graph.facebook.com/204996/picture","matchData":"200024"},
+	    {"id":"4","url":"http://graph.facebook.com/205205/picture","matchData":"200024"},
+	    {"id":"5","url":"http://graph.facebook.com/205772/picture","matchData":"200024"},
+	    {"id":"6","url":"http://graph.facebook.com/206517/picture","matchData":"200024"},
+	    {"id":"7","url":"http://graph.facebook.com/208305/picture","matchData":"200024"},
+	    {"id":"8","url":"http://graph.facebook.com/224713/picture","matchData":"200024"},
+	    
+	    {"id":"9","url":"http://graph.facebook.com/200024/picture","matchData":"200024"},
+	    {"id":"10","url":"http://graph.facebook.com/200253/picture","matchData":"200024"},
+	    {"id":"11","url":"http://graph.facebook.com/204996/picture","matchData":"200024"},
+	    {"id":"12","url":"http://graph.facebook.com/205205/picture","matchData":"200024"},
+	    {"id":"13","url":"http://graph.facebook.com/205772/picture","matchData":"200024"},
+	    {"id":"14","url":"http://graph.facebook.com/206517/picture","matchData":"200024"},
+	    {"id":"15","url":"http://graph.facebook.com/208305/picture","matchData":"200024"},
+	    {"id":"16","url":"http://graph.facebook.com/224713/picture","matchData":"200024"}
+	]);
+	this._view.startGame();
+
+    }
+}
+
+gPage.run();
+
+</script>
+
+</body>
+</html>
