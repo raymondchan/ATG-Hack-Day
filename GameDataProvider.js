@@ -7,6 +7,12 @@ var MemoryWall = MemoryWall || {};
 MemoryWall.GameDataProvider = function(){
 	var Me = {};//this pointer
 	Me.facebookFriendsData = new Array();
+	Me.CONSTANT = {
+			CATEGORY_PICTURE:"picture",
+			CATEGORY_FRIENDS:"friends",
+			CATEGORY_EDUCATION:"education"
+			};
+	Me.gameData = {};
 	
 	//query facebook graph for friend data
 	function getGenericUserData(params, matchcol)
@@ -24,9 +30,35 @@ MemoryWall.GameDataProvider = function(){
 		params.callback(Me.gameData);
 	}
 	
-	function prepData(category)
+	//assumes FB friend raw data is ready in Me.facebookFriendsData, goes through raw data and selects size elements based on category
+	function prepData(params)
 	{
-		
+		Me.gameData = {"version":"1.0"};
+
+		if (params.category == Me.CONSTANT.CATEGORY_PICTURE) {
+			//select random size/2 friends
+			pickSize = params.size/2;
+			
+			if (Me.facebookFriendsData.length < pickSize) {
+				throw "You have very few number of friends. You don't deserve to play this game!";
+			}
+			
+			var picked = [];
+			var target = new Array(Me.facebookFriendsData.length);
+			for (i=0;i<target.length;i++) target[i]=i;
+			for(i=0;i<pickSize;i++){
+				j = Math.floor(Math.random()*target.length);
+				picked.push(target[j]);
+				target.splice(j,1);
+			}
+			Me.gameData.comparator = function(o1,o2){ return (o1.matchData==o2.matchData) };
+			Me.gameData.data = new Array(picked.length);
+			for(i=0;i<picked.length;i++){
+				friend = Me.facebookFriendsData[picked[i]];
+				Me.gameData.data.push({"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid});
+				Me.gameData.data.push({"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid});
+			}	
+		}
 	}
 	
 	Me.getCategories = function () {
