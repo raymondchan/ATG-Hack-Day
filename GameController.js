@@ -54,6 +54,7 @@ var MemoryWall = MemoryWall || {};
     // welcome screen
     $('#initgame').click(function(){
       self.fbLogin(function(){
+        window.scrollTo(0,1);
         FB.api('/me', function(response) {
           self.userData = {
             name: response.name,
