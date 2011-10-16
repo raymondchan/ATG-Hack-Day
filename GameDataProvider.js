@@ -10,7 +10,8 @@ MemoryWall.GameDataProvider = function(){
 	Me.CONSTANT = {
 			CATEGORY_PICTURE:"picture",
 			CATEGORY_FRIENDS:"friends",
-			CATEGORY_EDUCATION:"education"
+			CATEGORY_EDUCATION:"education",
+			MAX_FRIEND_COUNT:500,
 			};
 	Me.gameData = {};
 	
@@ -20,7 +21,7 @@ MemoryWall.GameDataProvider = function(){
 		fql = 'SELECT uid, name, ' + matchcol + ' FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())';
 		FB.api({ method: 'fql.query', query: fql }, function(result) {
 			Me.facebookFriendsData = new Array();
-			 var max = Math.min(300, result.length);
+			 var max = Math.min(Me.CONSTANT.MAX_FRIEND_COUNT, result.length);
 		      for (var i=0; i<max; i++) 
 		      {
 		    	  var t = {"uid":result[i].uid, "name":result[i].name};
@@ -57,12 +58,37 @@ MemoryWall.GameDataProvider = function(){
 				target.splice(j,1);
 			}
 			Me.gameData.comparator = function(o1,o2){ return (o1.matchData==o2.matchData); };
-			Me.gameData.data = new Array(picked.length);
+			Me.gameData.data = new Array(picked.length*2);
 			for(i=0;i<picked.length;i++){
 				friend = Me.facebookFriendsData[picked[i]];
 				Me.gameData.data[i] = {"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid};
 				Me.gameData.data[i+pickSize] = {"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid};
 			}	
+		}else if (params.category == Me.CONSTANT.CATEGORY_FRIENDS) {
+			//select size/2 pairs of friends who are friends with each other
+			pickSize = params.size/2;
+			/*
+			if (Me.facebookFriendsData.length < params.size) {
+				throw "You have very few number of friends. You don't deserve to play this game!";
+			}
+			
+			var picked = [];
+			var i = 0;
+			var target = new Array(Me.facebookFriendsData.length);
+			for (i=0;i<target.length;i++) target[i]=i;
+			for(i=0;i<pickSize;i++){
+				j = Math.floor(Math.random()*target.length);
+				picked.push(target[j]);
+				target.splice(j,1);
+			}
+			Me.gameData.comparator = function(o1,o2){ return (o1.matchData==o2.matchData); };
+			Me.gameData.data = new Array(picked.length*2);
+			for(i=0;i<picked.length;i++){
+				friend = Me.facebookFriendsData[picked[i]];
+				Me.gameData.data[i] = {"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid};
+				Me.gameData.data[i+pickSize] = {"url":"http://graph.facebook.com/"+friend.uid+"/picture","matchData":friend.uid};
+			}	
+			*/			
 		}
 	}
 	
