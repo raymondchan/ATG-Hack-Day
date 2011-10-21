@@ -9,6 +9,7 @@ function CLASS_Mediator(provider,view) {
 	this.clickAccum=new Array();
 	this.MAX_CLICK=2;
 	this.CLICK_WAIT_TIME=3000;
+	this._gamePointCallback=new Object();
 }
 
 //fetches game data from the backend
@@ -24,6 +25,13 @@ CLASS_Mediator.prototype.getData = function(category,size,callback)
 	                callback();
 	}}
 	);
+}
+
+//adds a point increase callback for notifying the controller that
+//the player correctly discovered a valid pair
+CLASS_Mediator.prototype.registerGameCallbacks=function(pointCallback)
+{
+	this._gamePointCallback={"pointCallback":pointCallback};
 }
 
 //initialize the view
@@ -117,7 +125,9 @@ CLASS_Mediator.prototype._flippedCallback = function(id)
 				self._view.flipTile(id1);
 				self._view.flipTile(id2);
 			}, 1000);
-  	    }
+  	    } else { //correct click
+			self._gamePointCallback["pointCallback"](); //notify controller
+		}
 	} else {
 	self.resetClicker();	
 	}
