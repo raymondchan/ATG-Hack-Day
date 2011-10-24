@@ -85,15 +85,12 @@ var MemoryWall = MemoryWall || {};
   };
 
   GameController.prototype.startGame = function(category){
-    var self = this;
-    $('.gamestates').hide();
-    var mediator = new CLASS_Mediator(this.gameDataProvider, this.gameView);
-    mediator.getData(category.name, 16, function(){
-      mediator.initView(category.question);
-      mediator.shuffle();
-      mediator.renderView();      
-    });
-    $('.gamestates.canvas').fadeIn();
+      var self = this;
+      $('.gamestates').hide();
+      var mediator = new CLASS_Mediator(this.gameDataProvider, this.gameView);
+      // TODO: pass in callback for game completed
+      mediator.startGame(category, 16, 90, null);
+      $('.gamestates.canvas').fadeIn();
 /*
     // TODO: instantiate game object
     this.gameView.initView({"name":"education","question":"Match friends who went to same school"}, [

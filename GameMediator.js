@@ -1,30 +1,56 @@
 //*class used to interface with the controller and the view
 //
 function CLASS_Mediator(provider,view) {
-	this._gameData=new Array();
-	this._fullData=new Object();
-	this._provider=provider;
-	this._view = view;
-	this._title="";
-	this.clickAccum=new Array();
-	this.MAX_CLICK=2;
-	this.CLICK_WAIT_TIME=3000;
-	this._gamePointCallback=new Object();
+    this._gameData=new Array();
+    this._fullData=new Object();
+    this._provider=provider;
+    this._view = view;
+    this._title="";
+    this.clickAccum=new Array();
+    this.MAX_CLICK=2;
+    this.CLICK_WAIT_TIME=3000;
+    this._gamePointCallback=new Object();
+    this._gameCompletedCallback = null;
+    this._gameTicker = null;
+}
+
+
+CLASS_Mediator.prototype.startGame = function(category,size,gameDurationSecs,gameCompletedCallback) 
+{
+    var self = this;
+    this._gameCompletedCallback = gameCompletedCallback;
+    this.getData(category.name, size, function(){
+	self.initView(category.question);
+	self.shuffle();
+	self.renderView();
+	self._view.setTimerDisplay(gameDurationSecs+"s"); // set initial time
+	self._gameTicker = new Ticker(gameDurationSecs*1000, 1000, function() {
+	    if (typeof self._gameCompletedCallback == "function") {
+		self._gameCompletedCallback();
+	    }
+	}, function() {
+	    // update seconds remaining on UI
+	    self._view.setTimerDisplay(Math.round(self._gameTicker.getRemainingTime()/1000)+"s");
+	});
+	// TODO: stop ticker if user completes game before time limit
+	self._gameTicker.start();
+    });
+
 }
 
 //fetches game data from the backend
 CLASS_Mediator.prototype.getData = function(category,size,callback) 
 {
   var self = this;
-	this._provider.getGameData({"category":category,
-	                       "size":size,
-						   "callback": function (d) {
-					       self._fullData=d;
-	                self._gameData=self._fullData.data;
-	                self._addIDs();
-	                callback();
-	}}
-	);
+    this._provider.getGameData({"category":category,
+				"size":size,
+				"callback": function (d) {
+				    self._fullData=d;
+				    self._gameData=self._fullData.data;
+				    self._addIDs();
+				    callback();
+				}}
+			      );
 }
 
 //adds a point increase callback for notifying the controller that
@@ -94,7 +120,7 @@ CLASS_Mediator.prototype.resetClicker = function(waitTime) {
 
 //starts a game timer
 CLASS_Mediator.prototype.setGameTimer = function(timerInfo) {
-	if (timeInfo) {
+	if (timerInfo) {
 	 if (this.timer) { this.timer.clear();}
 	 this.timer=new Ticker(timerInfo.duration,
 	                        timerInfo.interval,
